@@ -1,0 +1,9 @@
+name = "workers-image-resize-debug"
+type = "javascript"
+#
+account_id = ""
+zone_id = ""
+route = ""
+#
+workers_dev = false
+compatibility_date = "2021-12-01"
