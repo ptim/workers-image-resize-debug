@@ -1,17 +1,27 @@
+# https://github.com/ptim/web.scraper.workers.dev/blob/master/.github/workflows/deploy.yml
+name: Deploy
+
 on:
   push:
-  pull_request:
+    branches:
+      - main
   repository_dispatch:
+
 jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      timeout-minutes: 60
-      needs: test
-      steps:
-        - uses: actions/checkout@v2
-        - name: Publish
-          uses: cloudflare/wrangler-action@1.3.0
-          with:
-            apiToken: ${{ secrets.CF_API_TOKEN }}
-          env:
-            CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Navigate to repo
+      run: cd $GITHUB_WORKSPACE
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install deps
+      run: npm install
+    - name: Publish
+      uses: cloudflare/wrangler-action@1.2.0
+      with:
+        apiToken: ${{ secrets.CF_API_TOKEN }}
+      env:
+        CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
